@@ -16,7 +16,9 @@ var queue = sqs({
 });
 
 // push some data to the test queue
-queue.push('test', {some:'data'});
+queue.push('test', {
+	some:'data'
+});
 
 // pull some data from the test queue
 queue.pull('test', function(message, callback) {
