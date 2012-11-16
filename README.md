@@ -39,6 +39,10 @@ when a message has arrived it is passed to `onmessage(message, callback)`.
 after you have processed the message call `callback` and the message is deleted from the queue.
 if for some reason the callback is not called amazon sqs will re-add the message to the queue.
 
+## fault tolerant
+
+both `pull` and `push` will retry multiple times if a network error occurs or if amazon sqs is temporary unavailable meaning.
+
 ## env config
 
 you can use env variables to configure `sqs` as well
