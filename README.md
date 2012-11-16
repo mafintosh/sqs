@@ -1,6 +1,6 @@
 # sqs
 
-Use the Amazon Simple Queue Service (sqs) with node
+A message queue using [Amazon Simple Queue Service](http://docs.amazonwebservices.com/AWSSimpleQueueService/latest/APIReference/Welcome.html).
 
 	npm install sqs
 
