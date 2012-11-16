@@ -31,7 +31,7 @@ queue.pull('test', function(message, callback) {
 
 push a new message to the queue defined by name.
 
-	queue.pull(name, [workers], onmessage)
+	queue.pull(name, [workers=1], onmessage)
 
 pull a message from the queue.
 
