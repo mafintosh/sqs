@@ -1,0 +1,9 @@
+{
+	"name":"sqs",
+	"version":"0.0.1",
+	"dependencies": {"request":"2.x.x"},
+	"repository": "git://github.com/mafintosh/sqs",
+	"description":"use the amazon simple queue service (sqs) with node",
+	"keywords": ["sqs", "aws", "amazon", "queue", "message"],
+	"author": "Mathias Buus Madsen <mathiasbuus@gmail.com>"
+}
