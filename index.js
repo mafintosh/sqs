@@ -50,15 +50,11 @@ module.exports = function(options) {
 		params.Expires = new Date(Date.now()+SIGNATURE_TTL).toISOString();
 		params.Version = VERSION;
 
-		if (options.token) {
-			params.SecurityToken = options.token;
-		}
-
 		var stringToSign = 'GET\n'+host+'\n'+path+'\n'+[].concat(Object.keys(params).sort().map(function(name) {
 			return name+'='+encodeURIComponent(params[name]).replace(/\*/g, '%2A');
 		})).join('&');
 
-		params.Signature = options.signature || crypto.createHmac('sha256',options.secret).update(stringToSign).digest('base64');
+		params.Signature = crypto.createHmac('sha256',options.secret).update(stringToSign).digest('base64');
 
 		return proto+host+path+'?'+qs.stringify(params);
 	};
