@@ -36,7 +36,7 @@ Create a queue instance. Available options are
 * `options.access` - Your AWS access key (required)
 * `options.secret` - Your AWS secret key (required)
 * `options.region` - The AWS region for the queue. Defaults to us-east-1
-* `options.namespace` - Prefix all queues with `namespace`.
+* `options.namespace` - Prefix all queues with `namespace`. Defaults to empty string.
 * `options.https` - If true use https. Defaults to false.
 
 Some of the options can be configured using env vars. See below for more.
