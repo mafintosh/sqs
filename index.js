@@ -71,7 +71,7 @@ module.exports = function(options) {
 	var retry = function(req, url) {
 		var retries = 0;
 		var action = function() {
-			req(url, function(err, res) {
+			req(url, {timeout:10000}, function(err, res) {
 				if (!err && res.statusCode < 500) return;
 				retries++;
 				if (retries > 15) return that.emit('error', new Error('could send '+url));
