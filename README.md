@@ -12,7 +12,7 @@ var sqs = require('sqs');
 var queue = sqs({
 	access:'my-aws-access-key',
 	secret:'my-aws-secret-key',
-	region:'us-east-1'
+	region:'us-east-1' // defaults to us-east-1
 });
 
 // push some data to the test queue
