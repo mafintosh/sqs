@@ -1,10 +1,10 @@
 # sqs
 
-use the amazon simple queue service (sqs) with node
+Use the Amazon Simple Queue Service (sqs) with node
 
 	npm install sqs
 
-usage is simple
+Usage is simple
 
 ``` js
 var sqs = require('sqs');
@@ -20,32 +20,36 @@ queue.push('test', {some:'data'});
 
 // pull some data from the test queue
 queue.pull('test', function(message, callback) {
-	console.log('someone pushed', message, 'to the queue');
+	console.log('someone pushed', message);
 	callback();
 });
 ```
 
-## methods
+## API
 
 	queue.push(name, message)
 
-push a new message to the queue defined by name.
+Push a new message to the queue defined by name. If the queue doesn't exist sqs will create it.
 
 	queue.pull(name, [workers=1], onmessage)
 
-pull a message from the queue.
+Pull a message from the queue defined by name.
 
-when a message has arrived it is passed to `onmessage(message, callback)`.
-after you have processed the message call `callback` and the message is deleted from the queue.
-if for some reason the callback is not called amazon sqs will re-add the message to the queue.
+The pull flow is as follows:
 
-## fault tolerant
+1. A message is pulled and is passed to `onmessage(message, callback`
+2. You process the message
+3. Call `callback` when you are done and the message will be deleted from the queue.
 
-both `pull` and `push` will retry multiple times if a network error occurs or if amazon sqs is temporary unavailable meaning.
+If for some reason the callback is not called amazon sqs will re-add the message to the queue after 30s.
 
-## env config
+## Fault tolerance
 
-you can use env variables to configure `sqs` as well
+Both `pull` and `push` will retry multiple times if a network error occurs or if amazon sqs is temporary unavailable.
+
+## Env config
+
+You can use env variables to configure `sqs` as well
 
 ```
 SQS_ACCESS_KEY=my-access-key
@@ -53,8 +57,10 @@ SQS_SECRET_KEY=my-secret-key
 SQS_REGION=us-east-1
 ```
 
-then in your application you can just call an empty constructor
+In your application you can just call an empty constructor
 
 ``` js
 var queue = sqs();
 ```
+
+This is very useful if you dont want to hardcode your keys in the application.
