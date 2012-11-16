@@ -11,7 +11,8 @@ var sqs = require('sqs');
 
 var queue = sqs({
 	access:'my-aws-access-key',
-	secret:'my-aws-secret-key'
+	secret:'my-aws-secret-key',
+	region:'us-east-1'
 });
 
 // push some data to the test queue
@@ -37,3 +38,19 @@ pull a message from the queue.
 when a message has arrived it is passed to `onmessage(message, callback)`.
 after you have processed the message call `callback` and the message is deleted from the queue.
 if for some reason the callback is not called amazon sqs will re-add the message to the queue.
+
+## env config
+
+you can use env variables to configure `sqs` as well
+
+```
+SQS_ACCESS_KEY=my-access-key
+SQS_SECRET_KEY=my-secret-key
+SQS_REGION=us-east-1
+```
+
+then in your application you can just call an empty constructor
+
+``` js
+var queue = sqs();
+```

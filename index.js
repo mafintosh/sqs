@@ -7,7 +7,7 @@ var SIGNATURE_METHOD  = 'HmacSHA256';
 var SIGNATURE_VERSION = '2';
 var SIGNATURE_TTL = 30*1000;
 var VERSION = '2012-11-05';
-var DEFAULT_REGION = 'eu-west-1';
+var DEFAULT_REGION = 'us-east-1';
 
 var text = function(xml, tag) {
 	var i = xml.indexOf('<'+tag+'>');
@@ -26,6 +26,15 @@ var range = function(num) {
 };
 
 module.exports = function(options) {
+	options = options || {};
+
+	options.access = options.access || process.env.SQS_ACCESS_KEY;
+	options.secret = options.secret || process.env.SQS_SECRET_KEY;
+	options.region = options.region || process.env.SQS_REGION || DEFAULT_REGION;
+	options.token  = options.token  || process.env.SQS_TOKEN;
+
+	if (!options.access || !options.secret) throw new Error('options.access and options.secret are required');
+
 	var queues = {};
 	var closed = false;
 	var agent = new http.Agent();
