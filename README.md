@@ -29,6 +29,18 @@ queue.pull('test', function(message, callback) {
 
 ## API
 
+	var queue = sqs(options)
+
+Create a queue instance. Available options are
+
+* `options.access` - Your AWS access key (required)
+* `options.secret` - Your AWS secret key (required)
+* `options.region` - The AWS region for the queue. Defaults to us-east-1
+* `options.namespace` - Prefix all queues with `namespace`.
+* `options.https` - If true use https. Defaults to false.
+
+Some of the options can be configured using env vars. See below for more.
+
 	queue.push(name, message)
 
 Push a new message to the queue defined by name. If the queue doesn't exist sqs will create it.
