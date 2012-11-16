@@ -38,12 +38,7 @@ module.exports = function(options) {
 	var closed = false;
 	var proto = options.https ? 'https://' : 'http://';
 	var host = 'sqs.'+options.region+'.amazonaws.com';
-	var agent = new http.Agent();
 	var namespace = options.namespace ? options.namespace+'-' : '';
-
-	var req = request.defaults({ // we use long polling so we wanna use our own agent
-		agent:agent
-	});
 
 	var queryURL = function(action, path, params) {
 		params = params || {};
@@ -103,9 +98,9 @@ module.exports = function(options) {
 			}
 		};
 
-		req(queryURL('CreateQueue', '/', {QueueName:name}), function(err) {
+		request(queryURL('CreateQueue', '/', {QueueName:name}), function(err) {
 			if (err) return onresult(err);
-			req(queryURL('GetQueueUrl', '/', {QueueName:name}), function(err, res) {
+			request(queryURL('GetQueueUrl', '/', {QueueName:name}), function(err, res) {
 				if (err || res.statusCode !== 200) return onresult(err);
 				onresult(null, '/'+text(res.body, 'QueueUrl').split('/').slice(3).join('/'));
 			});
@@ -118,7 +113,7 @@ module.exports = function(options) {
 		name = namespace+name;
 
 		queueURL(name, function(url) {
-			retry(req, queryURL('SendMessage', url, {MessageBody:JSON.stringify(message)}));
+			retry(request, queryURL('SendMessage', url, {MessageBody:JSON.stringify(message)}));
 		});
 	};
 
@@ -127,14 +122,16 @@ module.exports = function(options) {
 
 		name = namespace+name;
 
+		var agent = new http.Agent({maxSockets:workers}); // long poll should use its own agent
+		var req = request.defaults({agent:agent});
+
 		range(workers).forEach(function() {
 			var next = function() {
 				if (closed) return;
 
 				queueURL(name, function(url) {
 					req(queryURL('ReceiveMessage', url, {WaitTimeSeconds:20}), function(err, res) {
-						if (err) return setTimeout(next, 2000);
-						if (res.statusCode !== 200) return setTimeout(next, 2000);
+						if (err || res.statusCode !== 200) return setTimeout(next, 2000);
 
 						var body = text(res.body, 'Body');
 
@@ -150,7 +147,7 @@ module.exports = function(options) {
 
 						onmessage(body, function(err) {
 							if (err) return next();
-							retry(req, queryURL('DeleteMessage', url, {ReceiptHandle:receipt}));
+							retry(request, queryURL('DeleteMessage', url, {ReceiptHandle:receipt}));
 							next();
 						});
 
