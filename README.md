@@ -32,6 +32,8 @@ push a new message to the queue defined by name.
 
 	queue.pull(name, [workers], onmessage)
 
-pull a message from the queue. when a message has arrived it is passed to `onmessage(message, callback)`.
-when you are done with the message you call the callback and the message is deleted from the queue.
-if the callback isn't called for some reason the message will be readded to the queue by amazon sqs.
+pull a message from the queue.
+
+when a message has arrived it is passed to `onmessage(message, callback)`.
+after you have processed the message call `callback` and the message is deleted from the queue.
+if for some reason the callback is not called amazon sqs will re-add the message to the queue.
