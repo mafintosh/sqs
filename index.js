@@ -50,9 +50,9 @@ module.exports = function(options) {
 		params.Expires = new Date(Date.now()+SIGNATURE_TTL).toISOString();
 		params.Version = VERSION;
 
-		var stringToSign = 'GET\n'+host+'\n'+path+'\n'+[].concat(Object.keys(params).sort().map(function(name) {
+		var stringToSign = 'GET\n'+host+'\n'+path+'\n'+Object.keys(params).sort().map(function(name) {
 			return name+'='+encodeURIComponent(params[name]).replace(/\*/g, '%2A');
-		})).join('&');
+		}).join('&');
 
 		params.Signature = crypto.createHmac('sha256',options.secret).update(stringToSign).digest('base64');
 
