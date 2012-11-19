@@ -20,10 +20,10 @@ queue.push('test', {
 	some:'data'
 });
 
-// pull some data from the test queue
+// pull messages from the test queue
 queue.pull('test', function(message, callback) {
 	console.log('someone pushed', message);
-	callback();
+	callback(); // we are done with this message - pull a new one
 });
 ```
 
@@ -47,13 +47,14 @@ Push a new message to the queue defined by name. If the queue doesn't exist sqs 
 
 	queue.pull(name, [workers=1], onmessage)
 
-Pull a message from the queue defined by name.
+Pull messages from the queue defined by name.
 
 The pull flow is as follows:
 
-1. A message is pulled and is passed to `onmessage(message, callback`
+1. A message is pulled and is passed to `onmessage(message, callback)`
 2. You process the message
 3. Call `callback` when you are done and the message will be deleted from the queue.
+4. Goto 1
 
 If for some reason the callback is not called amazon sqs will re-add the message to the queue after 30s.
 
