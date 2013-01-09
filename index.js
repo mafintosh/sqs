@@ -59,11 +59,12 @@ module.exports = function(options) {
 		return proto+host+path+'?'+qs.stringify(params);
 	};
 
-	var retry = function(req, url) {
+	var retry = function(req, url, callback) {
 		var retries = 0;
 		var action = function() {
 			req(url, {timeout:10000}, function(err, res) {
 				if (!err && res.statusCode < 500) return;
+				if (callback) return callback(err || new Error('invalid status-code: '+res.statusCode));
 				retries++;
 				if (retries > 15) return that.emit('error', new Error('could send '+url));
 				setTimeout(action, retries*1000);
@@ -105,11 +106,11 @@ module.exports = function(options) {
 
 	var that = new process.EventEmitter();
 
-	that.push = function(name, message) {
+	that.push = function(name, message, callback) {
 		name = namespace+name;
 
 		queueURL(name, function(url) {
-			retry(request, queryURL('SendMessage', url, {MessageBody:JSON.stringify(message)}));
+			retry(request, queryURL('SendMessage', url, {MessageBody:JSON.stringify(message)}), callback);
 		});
 	};
 
