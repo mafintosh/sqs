@@ -24,6 +24,7 @@ queue.push('test', {
 queue.pull('test', function(message, callback) {
 	console.log('someone pushed', message);
 	callback(); // we are done with this message - pull a new one
+	            // calling the callback will also delete the message from the queue
 });
 ```
 
