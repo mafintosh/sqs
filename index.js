@@ -63,8 +63,9 @@ module.exports = function(options) {
 		var retries = 0;
 		var action = function() {
 			req(url, {timeout:10000}, function(err, res) {
-				if (!err && res.statusCode < 500) return;
-				if (callback) return callback(err || new Error('invalid status-code: '+res.statusCode));
+				if (!err && res.statusCode >= 500) err = new Error('invalid status-code: '+res.statusCode);
+				if (callback) return callback(err);
+				if (!err) return;
 				retries++;
 				if (retries > 15) return that.emit('error', new Error('could send '+url));
 				setTimeout(action, retries*1000);
