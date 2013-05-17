@@ -1,9 +1,17 @@
 {
-	"name":"sqs",
-	"version":"0.1.5",
-	"dependencies": {"request":"2.x.x"},
-	"repository": "git://github.com/mafintosh/sqs",
-	"description":"A message queue using Amazon Simple Queue Service.",
-	"keywords": ["sqs", "aws", "amazon", "queue", "message"],
-	"author": "Mathias Buus Madsen <mathiasbuus@gmail.com>"
+  "name": "sqs",
+  "version": "0.1.6",
+  "dependencies": {
+    "request": "~2.21.0"
+  },
+  "repository": "git://github.com/mafintosh/sqs",
+  "description": "A message queue using Amazon Simple Queue Service.",
+  "keywords": [
+    "sqs",
+    "aws",
+    "amazon",
+    "queue",
+    "message"
+  ],
+  "author": "Mathias Buus Madsen <mathiasbuus@gmail.com>"
 }
