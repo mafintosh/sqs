@@ -1,6 +1,6 @@
 {
   "name": "sqs",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "dependencies": {
     "request": "~2.21.0"
   },
