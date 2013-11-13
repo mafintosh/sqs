@@ -51,7 +51,7 @@ module.exports = function(options) {
 		params.Version = VERSION;
 
 		var stringToSign = 'GET\n'+host+'\n'+path+'\n'+Object.keys(params).sort().map(function(name) {
-			return name+'='+encodeURIComponent(params[name]).replace(/\*/g, '%2A').replace(/\(/g, '%28').replace(/\)/g, '%29');
+			return name+'='+encodeURIComponent(params[name]).replace(/[!'()]/g, escape).replace(/\*/g, '%2A');
 		}).join('&');
 
 		params.Signature = crypto.createHmac('sha256',options.secret).update(stringToSign).digest('base64');
