@@ -140,7 +140,8 @@ module.exports = function(options) {
 						try {
 							body = JSON.parse(unscape(body));
 						} catch (err) {
-							return next();
+							//return next();
+              body = unscape(body);
 						}
 
 						onmessage(body, function(err) {
