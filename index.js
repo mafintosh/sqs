@@ -40,7 +40,7 @@ module.exports = function(options) {
 	var host = 'sqs.'+options.region+'.amazonaws.com';
 	var namespace = options.namespace ? options.namespace+'-' : '';
 
-	namespace = namespace.replace(/[^a-Z]/g, '-').replace(/\-+/g, '-');
+	namespace = namespace.replace(/[^a-zA-Z0-9]/g, '-').replace(/\-+/g, '-');
 
 	var queryURL = function(action, path, params) {
 		params = params || {};
