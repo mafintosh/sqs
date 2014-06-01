@@ -145,9 +145,11 @@ module.exports = function(options) {
 							return next();
 						}
 
-						onmessage(body, function(err) {
+            // Callback takes an arbitrary error and an `end` to stop polling for messages
+						onmessage(body, function(err, end) {
 							if (err) return next();
 							retry(request, queryURL('DeleteMessage', url, {ReceiptHandle:receipt}));
+              if (end) return;
 							next();
 						});
 
