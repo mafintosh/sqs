@@ -117,6 +117,14 @@ module.exports = function(options) {
 		});
 	};
 
+	that.delete = function(name, callback) {
+		name = namespace+name;
+
+		queueURL(name, function(url) {
+			retry(request, queryURL('DeleteQueue', url), callback);
+		});
+	};
+
 	that.pull = function(name, workers, onmessage) {
 		if (typeof workers === 'function') return that.pull(name, options.workers || 1, workers);
 
