@@ -117,7 +117,7 @@ module.exports = function(options) {
 		});
 	};
 
-	that.delete = function(name, callback) {
+	that.delete = that.del = function(name, callback) {
 		name = namespace+name;
 
 		queueURL(name, function(url) {
