@@ -69,7 +69,7 @@ module.exports = function(options) {
 				if (callback) return callback(err);
 				if (!err) return;
 				retries++;
-				if (retries > 15) return that.emit('error', new Error('could send '+url));
+				if (retries > 15) return that.emit('error', new Error('could not send '+url));
 				setTimeout(action, retries*1000);
 			});
 		};
@@ -101,7 +101,7 @@ module.exports = function(options) {
 		request(queryURL('CreateQueue', '/', {QueueName:name}), function(err) {
 			if (err) return onresult(err);
 			request(queryURL('GetQueueUrl', '/', {QueueName:name}), function(err, res) {
-				if (err || res.statusCode !== 200) return onresult(err);
+				if (err || res.statusCode !== 200) return onresult(err || new Error('invalid status code from GetQueueUrl: '+res.statusCode));
 				onresult(null, '/'+text(res.body, 'QueueUrl').split('/').slice(3).join('/'));
 			});
 		});
