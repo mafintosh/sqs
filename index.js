@@ -150,7 +150,7 @@ module.exports = function(options) {
 						onmessage(body, function(err, ctx) {
 							if (err) return next();
 							retry(request, queryURL('DeleteMessage', url, {ReceiptHandle:receipt}));
-							if (ctx.stop === true) return;
+							if (ctx && ctx.stop === true) return;
 							next();
 						});
 
