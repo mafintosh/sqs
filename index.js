@@ -2,6 +2,7 @@ var request = require('request');
 var crypto = require('crypto');
 var qs = require('querystring');
 var http = require('http');
+var https = require('https');
 
 var SIGNATURE_METHOD  = 'HmacSHA256';
 var SIGNATURE_VERSION = '2';
@@ -130,7 +131,7 @@ module.exports = function(options) {
 
 		name = namespace+name;
 
-		var agent = new http.Agent({maxSockets:workers}); // long poll should use its own agent
+		var agent =  options.https ? new https.Agent({maxSockets:workers}) : new http.Agent({maxSockets:workers}); // long poll should use its own agent
 		var req = request.defaults({agent:agent});
 
 		range(workers).forEach(function() {
