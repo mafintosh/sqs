@@ -126,7 +126,7 @@ module.exports = function(options) {
 		});
 	};
 
-	var pullIntervalSeconds = options.pullIntervalSeconds || 2;
+	var wait = options.wait || 2000;
 
 	that.pull = function(name, workers, onmessage) {
 		if (typeof workers === 'function') return that.pull(name, options.workers || 1, workers);
@@ -142,16 +142,11 @@ module.exports = function(options) {
 
 				queueURL(name, function(url) {
 					req(queryURL('ReceiveMessage', url, {WaitTimeSeconds:20}), function(err, res) {
-						if (err || res.statusCode !== 200) {
-							return setTimeout(next, pullIntervalSeconds * 1000);
-						}
+						if (err || res.statusCode !== 200) return setTimeout(next, wait);
 
 						var body = text(res.body, 'Body');
 
-						if (!body)
-							return options.pullIntervalSeconds
-								? setTimeout(next, pullIntervalSeconds * 1000)
-								: next();
+						if (!body) return options.wait ? setTimeout(next, wait) : next();
 
 						var receipt = text(res.body, 'ReceiptHandle');
 
