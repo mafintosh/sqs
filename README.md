@@ -39,6 +39,7 @@ Create a queue instance. Available options are
 * `options.region` - The AWS region for the queue. Defaults to us-east-1
 * `options.namespace` - Prefix all queues with `namespace`. Defaults to empty string.
 * `options.https` - If true use https. Defaults to false.
+* `options.raw` - If true it doesn't parse message's body to JSON.
 
 Some of the options can be configured using env vars. See below for more.
 
