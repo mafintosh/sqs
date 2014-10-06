@@ -31,6 +31,7 @@ module.exports = function(options) {
 	options.access = options.access || process.env.SQS_ACCESS_KEY;
 	options.secret = options.secret || process.env.SQS_SECRET_KEY;
 	options.region = options.region || process.env.SQS_REGION || DEFAULT_REGION;
+  options.raw = options.raw || false;
 
 	if (!options.access || !options.secret) throw new Error('options.access and options.secret are required');
 
@@ -138,10 +139,9 @@ module.exports = function(options) {
 						var receipt = text(res.body, 'ReceiptHandle');
 
 						try {
-							body = JSON.parse(unscape(body));
+              body = (options.raw)?unscape(body):JSON.parse(unscape(body));
 						} catch (err) {
-							//return next();
-              body = unscape(body);
+							return next();
 						}
 
 						onmessage(body, function(err) {
