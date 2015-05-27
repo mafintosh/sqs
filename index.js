@@ -103,7 +103,11 @@ module.exports = function(options) {
 		request(queryURL('CreateQueue', '/', {QueueName:name}), function(err) {
 			if (err) return onresult(err);
 			request(queryURL('GetQueueUrl', '/', {QueueName:name}), function(err, res) {
-				if (err || res.statusCode !== 200) return onresult(err || new Error('invalid status code from GetQueueUrl: '+res.statusCode));
+				if (err || res.statusCode !== 200) {
+					var errMessage = res.body ? text(res.body, 'Message') : '';
+					return onresult(err || new Error('invalid status code from GetQueueUrl: '+res.statusCode +
+							(errMessage? '. '+errMessage : '') ));
+				}
 				onresult(null, '/'+text(res.body, 'QueueUrl').split('/').slice(3).join('/'));
 			});
 		});
