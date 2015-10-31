@@ -18,6 +18,8 @@ var queue = sqs({
 // push some data to the test queue
 queue.push('test', {
 	some:'data'
+}, function () {
+	// complete
 });
 
 // pull messages from the test queue
@@ -43,9 +45,9 @@ Create a queue instance. Available options are
 
 Some of the options can be configured using env vars. See below for more.
 
-	queue.push(name, message)
+	queue.push(name, message, [callback])
 
-Push a new message to the queue defined by name. If the queue doesn't exist sqs will create it.
+Push a new message to the queue defined by name. If the queue doesn't exist sqs will create it. Optional callback called once request is completed.
 
 	queue.pull(name, [workers=1], onmessage)
 
