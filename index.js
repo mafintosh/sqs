@@ -33,13 +33,17 @@ module.exports = function(options) {
 	options.secret = options.secret || process.env.SQS_SECRET_KEY;
 	options.region = options.region || process.env.SQS_REGION || DEFAULT_REGION;
 	options.raw = options.raw || false;
+	options.proxy = options.proxy || false;
 
 	if (!options.access || !options.secret) throw new Error('options.access and options.secret are required');
 
 	var queues = {};
 	var closed = false;
 	var proto = options.https ? 'https://' : 'http://';
+	
 	var host = 'sqs.'+options.region+'.amazonaws.com';
+	if (options.proxy) host = options.proxy;
+	
 	var namespace = options.namespace ? options.namespace+'-' : '';
 
 	namespace = namespace.replace(/[^a-zA-Z0-9]/g, '-').replace(/\-+/g, '-');
