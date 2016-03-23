@@ -42,6 +42,7 @@ Create a queue instance. Available options are
 * `options.namespace` - Prefix all queues with `namespace`. Defaults to empty string.
 * `options.https` - If true use https. Defaults to false.
 * `options.raw` - If true it doesn't parse message's body to JSON. Defaults to false.
+* `options.proxy` - If set to a URL it will overwrite the default AWS SQS url.
 
 Some of the options can be configured using env vars. See below for more.
 
