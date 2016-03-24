@@ -29,9 +29,9 @@ var range = function(num) {
 module.exports = function(options) {
 	options = options || {};
 
-	options.access = options.access || process.env.SQS_ACCESS_KEY;
-	options.secret = options.secret || process.env.SQS_SECRET_KEY;
-	options.region = options.region || process.env.SQS_REGION || DEFAULT_REGION;
+	options.access = options.access || process.env.SQS_ACCESS_KEY || process.env.AWS_ACCESS_KEY_ID;
+	options.secret = options.secret || process.env.SQS_SECRET_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+	options.region = options.region || process.env.SQS_REGION || process.env.AWS_REGION || DEFAULT_REGION;
 	options.raw = options.raw || false;
 	options.proxy = options.proxy || false;
 
