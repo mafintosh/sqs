@@ -3,6 +3,7 @@ var crypto = require('crypto');
 var qs = require('querystring');
 var http = require('http');
 var https = require('https');
+var events = require('events')
 
 var SIGNATURE_METHOD  = 'HmacSHA256';
 var SIGNATURE_VERSION = '2';
@@ -40,10 +41,10 @@ module.exports = function(options) {
 	var queues = {};
 	var closed = false;
 	var proto = options.https ? 'https://' : 'http://';
-	
+
 	var host = 'sqs.'+options.region+'.amazonaws.com';
 	if (options.proxy) host = options.proxy;
-	
+
 	var namespace = options.namespace ? options.namespace+'-' : '';
 
 	namespace = namespace.replace(/[^a-zA-Z0-9]/g, '-').replace(/\-+/g, '-');
@@ -117,7 +118,7 @@ module.exports = function(options) {
 		});
 	};
 
-	var that = new process.EventEmitter();
+	var that = new events.EventEmitter();
 
 	that.push = function(name, message, callback) {
 		name = namespace+name;
