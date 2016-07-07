@@ -124,7 +124,8 @@ module.exports = function(options) {
 		name = namespace+name;
 
 		queueURL(name, function(url) {
-			retry(request, queryURL('SendMessage', url, {MessageBody:JSON.stringify(message)}), callback);
+			var body = options.raw ? message : JSON.stringify(message);
+			retry(request, queryURL('SendMessage', url, {MessageBody: body}), callback);
 		});
 	};
 
