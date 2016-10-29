@@ -63,6 +63,10 @@ The pull flow is as follows:
 
 If for some reason the callback is not called amazon sqs will re-add the message to the queue after 30s.
 
+Delete a queue.
+
+	queue.delete(name, [callback])
+
 ## Fault tolerance
 
 Both `pull` and `push` will retry multiple times if a network error occurs or if amazon sqs is temporary unavailable.
