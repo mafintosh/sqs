@@ -3,7 +3,8 @@ var crypto = require('crypto');
 var qs = require('querystring');
 var http = require('http');
 var https = require('https');
-var events = require('events')
+var events = require('events');
+var aws4 = require('aws4');
 
 var SIGNATURE_METHOD  = 'HmacSHA256';
 var SIGNATURE_VERSION = '2';
@@ -49,22 +50,17 @@ module.exports = function(options) {
 
 	namespace = namespace.replace(/[^a-zA-Z0-9]/g, '-').replace(/\-+/g, '-');
 
+	request = request.defaults({
+		aws: {
+			key: options.access,
+			secret: options.secret,
+			sign_version: 4
+		}
+	});
+
 	var queryURL = function(action, path, params) {
 		params = params || {};
-
 		params.Action = action;
-		params.AWSAccessKeyId = options.access;
-		params.SignatureMethod = SIGNATURE_METHOD;
-		params.SignatureVersion = SIGNATURE_VERSION;
-		params.Expires = new Date(Date.now()+SIGNATURE_TTL).toISOString();
-		params.Version = VERSION;
-
-		var stringToSign = 'GET\n'+host+'\n'+path+'\n'+Object.keys(params).sort().map(function(name) {
-			return name+'='+encodeURIComponent(params[name]).replace(/[!'()]/g, escape).replace(/\*/g, '%2A');
-		}).join('&');
-
-		params.Signature = crypto.createHmac('sha256',options.secret).update(stringToSign).digest('base64');
-
 		return proto+host+path+'?'+qs.stringify(params);
 	};
 
